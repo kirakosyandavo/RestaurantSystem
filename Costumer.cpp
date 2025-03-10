@@ -7,7 +7,7 @@ Customer::Customer(const Customer& other){
     name=other.name;
     contactInfo=other.contactInfo;
     for(int i=0;i<other.orderHistory.size();i++){
-        orderHistory.push_back(*(new Order(other.orderHistory[i])));
+        orderHistory.push_back(Order(other.orderHistory[i]));
     }
 
 }
@@ -33,7 +33,7 @@ Customer& Customer::operator=(Customer&&other)noexcept{
     }
     name=move(other.name);
     contactInfo=move(other.contactInfo);
-    orderHistory=other.orderHistory;
+    orderHistory=std::move(other.orderHistory);
     other.orderHistory.clear();
     return *this;
 }

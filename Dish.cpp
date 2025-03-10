@@ -6,6 +6,7 @@ Dish::Dish(const Dish& other){
 Dish::Dish(Dish&& other)noexcept{
     name=move(other.name);
     price=other.price;
+    other.price=0.0;
 }
 Dish& Dish::operator=(const Dish& other){
     if(this== &other){

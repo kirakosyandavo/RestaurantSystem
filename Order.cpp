@@ -3,7 +3,12 @@ Order::Order(Customer* customer):m_customer{customer},totalPrice{0}{}
 
 
 Order::Order(const Order& other){
+    if(other.m_customer){
     m_customer=new Customer(*(other.m_customer));
+}
+else{
+    m_customer=nullptr;
+}
     totalPrice=other.totalPrice;
     for(int i=0;i<other.orderedDishes.size();i++){
     orderedDishes.push_back(new Dish(*other.orderedDishes[i]));
@@ -44,20 +49,23 @@ Order::Order(Order&& other)noexcept{
     m_customer=other.m_customer;
     other.m_customer=nullptr;
     totalPrice=other.totalPrice;
-    orderedDishes=move(other.orderedDishes);
-    other.orderedDishes.clear();     
+    orderedDishes=move(other.orderedDishes);   
 
 }
 Order& Order::operator=(Order&& other)noexcept{
     if(this==&other){
         return *this;
     }
+    if(m_customer==other.m_customer){
+        other.m_customer=nullptr;
+    }
+    else{
     delete m_customer;
     m_customer=other.m_customer;
     other.m_customer=nullptr;
+    }
     orderedDishes.clear();
     orderedDishes=move(other.orderedDishes);
-    other.orderedDishes.clear();
     totalPrice=other.totalPrice;
     return *this;
 }

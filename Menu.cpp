@@ -1,6 +1,6 @@
 #include"Menu.h"
 Menu::Menu(const Menu& other){
-    for(int i=0;i<dishes.size();i++){
+    for(int i=0;i<other.dishes.size();i++){
         dishes.push_back(new Dish(*other.dishes[i]));
     }
 }
@@ -8,8 +8,8 @@ Menu& Menu::operator=(const Menu& other){
     if(this==&other){
         return *this;
     }
-    for(int i=0;i<dishes.size();i++){
-        delete dishes[i];
+    for(Dish* dish : dishes){
+        delete dish;
     }
     dishes.clear();
     for(int i=0;i<dishes.size();i++){
@@ -28,10 +28,12 @@ Menu& Menu::operator=(Menu&& other)noexcept{
     for(int i=0;i<dishes.size();i++){
         delete dishes[i];
     }
+    dishes.clear();
     dishes=move(other.dishes);
     for(int i=0;i<other.dishes.size();i++){
         other.dishes[i]=nullptr;
     }
+    other.dishes.clear();
     return *this;
 }
 void Menu::addDish(Dish*dish){
@@ -48,7 +50,7 @@ Dish* Menu::getDishByName(const string& dishName)const{
             return dishes[i];
         }
     }
-       cout<<"there is no such dish";
+    std::cerr << "No dish found with name: " << dishName << std::endl;
        return nullptr;
 }
 Menu::~Menu(){
